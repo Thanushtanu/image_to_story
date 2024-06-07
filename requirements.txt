@@ -3,3 +3,4 @@ transformers
 pipeline
 streamlit
 gradio_client
+dotenv
