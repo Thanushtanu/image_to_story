@@ -3,5 +3,3 @@ transformers
 pipeline
 streamlit
 gradio_client
-Client
-os
