@@ -1,4 +1,4 @@
-from dotenv import find_dotenv , load_dotenv
+
 import requests
 from transformers import pipeline
 import streamlit as st
@@ -31,7 +31,7 @@ def extract_dialogue_from_dict_list(text_list):
 def img2text(url):
     img_to_text = pipeline("image-to-text" , model="Salesforce/blip-image-captioning-large")
     text = img_to_text(url)[0]['generated_text']
-    print(text)
+    #print(text)
     return text
 
 
@@ -54,7 +54,7 @@ def text_to_text (scenario):
         "inputs": template,
          "parameters": {"max_new_tokens": 20} 
     })
-    print(output)
+    #print(output)
     return output[0]['generated_text']
 
 
@@ -81,7 +81,7 @@ def  text_to_gpt(scenario):
     return extract_dialogue_from_dict_list(output)
                 
 
-text_to_gpt("a girl and a boy looking to each other")    
+
 
 def txt_to_speech(audio):
 
