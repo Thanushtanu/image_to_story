@@ -1,4 +1,4 @@
-
+from dotenv import find_dotenv , load_dotenv
 import requests
 from transformers import pipeline
 import streamlit as st
@@ -6,7 +6,7 @@ from gradio_client import Client
 import os
 
 
-
+load_dotenv(find_dotenv())
 import re
 
 def extract_dialogue_from_dict_list(text_list):
