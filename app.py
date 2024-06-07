@@ -6,7 +6,6 @@ from gradio_client import Client
 import os
 
 
-load_dotenv(find_dotenv())
 
 import re
 
