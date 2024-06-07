@@ -1,12 +1,7 @@
-from dotenv import find_dotenv , load_dotenv
+
 import requests
-from transformers import pipeline
 import streamlit as st
 from gradio_client import Client
-import os
-
-
-load_dotenv(find_dotenv())
 import re
 
 def extract_dialogue_from_dict_list(text_list):
@@ -27,35 +22,23 @@ def extract_dialogue_from_dict_list(text_list):
     all_dialogues = ' '.join(dialogue.strip() for dialogue in dialogues if dialogue.strip())
     return all_dialogues
 
+
 def img2text(url):
-    img_to_text = pipeline("image-to-text" , model="Salesforce/blip-image-captioning-large")
-    text = img_to_text(url)[0]['generated_text']
-    #print(text)
-    return text
 
-
-def text_to_text (scenario):
-     
-    API_URL = "https://api-inference.huggingface.co/models/google/flan-t5-base"
+    API_URL = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-large"
     headers = {"Authorization": "Bearer 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"}
 
-    def query(payload  ):
-        print("hi")
-        response = requests.post(API_URL, headers=headers, json=payload)
+    def query(filename):
+        with open(filename, "rb") as f:
+            data = f.read()
+        response = requests.post(API_URL, headers=headers, data=data)
         return response.json()
-    template = """
-        act as a director. write a dialogue for the provided text.
-        text : {scenario}
-        dialogue:  
-    
-        """	
-    output = query({
-        "inputs": template,
-         "parameters": {"max_new_tokens": 20} 
-    })
-    #print(output)
-    return output[0]['generated_text']
 
+    output = query(url)
+
+    te = output[0]['generated_text']
+    #print(te)
+    return te
 
 def  text_to_gpt(scenario):
 
@@ -76,7 +59,7 @@ def  text_to_gpt(scenario):
         "inputs": text_input,
     })
    
-    print(extract_dialogue_from_dict_list(output))
+    #print(extract_dialogue_from_dict_list(output))
     return extract_dialogue_from_dict_list(output)
                 
 
@@ -92,11 +75,6 @@ def txt_to_speech(audio):
     response = requests.post(API_URL, headers=headers, json=payloads)
     with open ('audio.flac' , 'wb') as file:
         file.write(response.content)
-
-
-
-
-
 
 def main():
 
